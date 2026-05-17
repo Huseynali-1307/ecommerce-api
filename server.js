@@ -1,16 +1,26 @@
-const express = require('express');
-const db = require('./db');
+const express = require("express");
+const categoryRoutes = require("./routes/categoryRoutes");
+const authRoutes = require("./routes/authRoutes");
+//const productRoutes = require("./routes/productRoutes");
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
-
-// Test route
-app.get('/', (req, res) => {
-    res.send('E-commerce API is running...');
+app.use((req, res, next) => {
+  console.log("METHOD:", req.method);
+  console.log("URL:", req.url);
+  console.log("BODY:", req.body);
+  next();
+});
+app.get("/", (req, res) => {
+  res.send("E-commerce API is running");
 });
 
+app.use("/categories", categoryRoutes);
+app.use("/", authRoutes);
+//app.use("/products", productRoutes);
+
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
